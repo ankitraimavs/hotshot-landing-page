@@ -25,6 +25,7 @@ const slides = [
   },
 ];
 
+
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -41,6 +42,10 @@ const Hero = () => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
+
+     const interval = setInterval(() => {
+    handleNext();
+  }, 2000);
 
     handleResize(); // Initial check
     window.addEventListener("resize", handleResize);
