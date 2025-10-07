@@ -2,81 +2,99 @@
 import React, { useState, useEffect } from "react";
 
 const slides = [
-  {
-    heading: "Discover",
-    paragraph:
-      "Check out the latest fashion trends and discover the forefront of fashion. Uncover the bold styles and innovative looks.",
-    image: "/landing-7.png",
-    icon: "/icons/icon-1.png",
-    color: "#6366f1",
-  },
-  {
-    heading: "Explore",
-    paragraph:
-      "Dive into the world of exclusive designs and standout outfits. Fashion meets creativity at every step.",
-    image: "/landing-5.png",
-    icon: "/icons/icon-2.png",
-    color: "#10b981",
-  },
-  {
-    heading: "Inspire",
-    paragraph:
-      "Be the trendsetter with our curated collection. Express yourself through bold, innovative styles.",
-    image: "/landing-6.png",
-    icon: "/icons/icon-3.png",
-    color: "#FDBC17",
-  },
+    {
+        heading: "Discover",
+        paragraph:
+            "Check out the latest fashion trends and discover the forefront of fashion. Uncover the bold styles and innovative looks.",
+        image: "/landing-7.png",
+        icon: "/icons/icon-1.png",
+        color: "#6366f1",
+    },
+    {
+        heading: "Explore",
+        paragraph:
+            "Dive into the world of exclusive designs and standout outfits. Fashion meets creativity at every step.",
+        image: "/landing-9.png",
+        icon: "/icons/icon-2.png",
+        color: "#BFB74C",
+    },
+    {
+        heading: "Inspire",
+        paragraph:
+            "Be the trendsetter with our curated collection. Express yourself through bold, innovative styles.",
+        image: "/landing-6.png",
+        icon: "/icons/icon-3.png",
+        color: "#FDBC17",
+    },
 ];
 
 const Hero = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [isMobile, setIsMobile] = useState(false);
 
-  const handleNext = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
-  const handlePrev = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  // Preload all slide images on mount
-  useEffect(() => {
-    slides.forEach((slide) => {
-      const img = new Image();
-      img.src = slide.image;
-    });
-  }, []);
-
-  // Handle responsive detection and auto slide
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+    const handleNext = () => {
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
     };
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    const interval = setInterval(() => {
-      handleNext();
-    }, 4000);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("resize", handleResize);
+    const handlePrev = () => {
+        setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
     };
-  }, []);
 
-  return (
-    <>
-      <style>{`
+    // Preload all slide images on mount
+    useEffect(() => {
+        slides.forEach((slide) => {
+            const img = new Image();
+            img.src = slide.image;
+        });
+    }, []);
+
+    // Handle responsive detection and auto slide
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+
+        const interval = setInterval(() => {
+            handleNext();
+        }, 4000);
+
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    return (
+        <>
+            <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+
+
+        .top-banner {
+  background-color: #ffffffff;
+  padding: 0.5rem 0rem 0rem 0rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.125rem;
+  text-align: center;
+  margin: 0.2rem auto;
+  max-width: 80vw;
+  color: #0f172a;
+}
+
+.top-banner strong {
+  font-weight: 600;
+  color: #0f172a;
+}
 
         .hero-container {
           display: flex;
           flex-direction: column;
           gap: 2.5rem;
-          padding: 4rem 2rem 2rem 2rem;
+          padding: 0rem 2rem 2rem 2rem;
           border-radius: 1rem;
           max-width: 72rem;
           margin: 0 auto;
@@ -97,7 +115,7 @@ const Hero = () => {
           width: 100%;
           display: flex;
           flex-direction: column;
-          padding: 4rem 0rem 0rem 0rem;
+          padding: 0rem 0rem 0rem 0rem;
           justify-content: center;
         }
 
@@ -255,7 +273,7 @@ const Hero = () => {
           }
 
           .image-wrapper {
-            max-width: 28rem;
+            max-width: 23rem;
             width: 100%;
             justify-content: center;
             align-items: center;
@@ -267,80 +285,89 @@ const Hero = () => {
         }
       `}</style>
 
-      <div className="hero-container">
-        {isMobile && (
-          <div className="right-content">
-            <div className="image-wrapper">
-              {slides.map((slide, index) => (
-                <img
-                  key={index}
-                  src={slide.image}
-                  alt={`Slide ${index}`}
-                  className={index === currentSlide ? "active" : ""}
-                />
-              ))}
+            <div className="top-banner">
+                <p>
+                    <em>A new social media app to </em>
+                    <strong>see, create</strong>
+                    <em> and </em>
+                    <strong>try the latest fashions!</strong>
+                </p>
             </div>
-          </div>
-        )}
 
-        <div className="left-content">
-          <div className="icon-wrapper">
-            <img src={slides[currentSlide].icon} alt="icon" />
-          </div>
+            <div className="hero-container">
+                {isMobile && (
+                    <div className="right-content">
+                        <div className="image-wrapper">
+                            {slides.map((slide, index) => (
+                                <img
+                                    key={index}
+                                    src={slide.image}
+                                    alt={`Slide ${index}`}
+                                    className={index === currentSlide ? "active" : ""}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
 
-          <div className="headline-wrapper">
-            <div
-              className="headline-gradient"
-              style={{
-                background: `radial-gradient(circle, ${slides[currentSlide].color}bb 0%, transparent 95%)`,
-              }}
-            />
-            <h2 className="heading">{slides[currentSlide].heading}</h2>
-          </div>
+                <div className="left-content">
+                    <div className="icon-wrapper">
+                        <img src={slides[currentSlide].icon} alt="icon" />
+                    </div>
 
-          <p className="paragraph">{slides[currentSlide].paragraph}</p>
+                    <div className="headline-wrapper">
+                        <div
+                            className="headline-gradient"
+                            style={{
+                                background: `radial-gradient(circle, ${slides[currentSlide].color}bb 0%, transparent 95%)`,
+                            }}
+                        />
+                        <h2 className="heading">{slides[currentSlide].heading}</h2>
+                    </div>
 
-          <div className="carousel-indicators">
-            {slides.map((_, index) => (
-              <span
-                key={index}
-                className={
-                  index === currentSlide
-                    ? "indicator-active"
-                    : "indicator-inactive"
-                }
-              />
-            ))}
-          </div>
+                    <p className="paragraph">{slides[currentSlide].paragraph}</p>
 
-          <div className="bottom-row">
-            <button className="nav-button" onClick={handlePrev}>
-              ‹ Previous
-            </button>
+                    <div className="carousel-indicators">
+                        {slides.map((_, index) => (
+                            <span
+                                key={index}
+                                className={
+                                    index === currentSlide
+                                        ? "indicator-active"
+                                        : "indicator-inactive"
+                                }
+                            />
+                        ))}
+                    </div>
 
-            <button className="nav-button" onClick={handleNext}>
-              Next <span className="next-arrow">›</span>
-            </button>
-          </div>
-        </div>
+                    <div className="bottom-row">
+                        <button className="nav-button" onClick={handlePrev}>
+                            ‹ Previous
+                        </button>
 
-        {!isMobile && (
-          <div className="right-content">
-            <div className="image-wrapper">
-              {slides.map((slide, index) => (
-                <img
-                  key={index}
-                  src={slide.image}
-                  alt={`Slide ${index}`}
-                  className={index === currentSlide ? "active" : ""}
-                />
-              ))}
+                        <button className="nav-button" onClick={handleNext}>
+                            Next <span className="next-arrow">›</span>
+                        </button>
+                    </div>
+                </div>
+
+                {!isMobile && (
+                    <div className="right-content">
+                        <div className="image-wrapper">
+                            {slides.map((slide, index) => (
+                                <img
+                                    key={index}
+                                    src={slide.image}
+                                    alt={`Slide ${index}`}
+                                    className={index === currentSlide ? "active" : ""}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
-          </div>
-        )}
-      </div>
-    </>
-  );
+        </>
+    );
 };
 
 export default Hero;
