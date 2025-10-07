@@ -1,6 +1,6 @@
-"use client";
+'use client';
 import React, { useState, useEffect } from "react";
-
+import posthog from 'posthog-js'; 
 
 const getStyles = (isMobile) => ({
   container: {
@@ -123,14 +123,25 @@ const WaitlistForm = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" }); 
-    setMessage(""); 
+    setErrors({ ...errors, [e.target.name]: "" });
+    setMessage("");
   };
 
+  // ✅ Fire PostHog event on input focus/click
+  const handleInputClick = (fieldName) => {
+    posthog.capture("waitlist_input_clicked", { field: fieldName });
+  };
+
+  // ✅ Fire PostHog event on form submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!validate()) return;
+
+    posthog.capture("waitlist_form_submitted", {
+      name: formData.name,
+      email: formData.email,
+    });
 
     console.log("Form submitted:", formData);
 
@@ -154,6 +165,7 @@ const WaitlistForm = () => {
               placeholder="Name"
               value={formData.name}
               onChange={handleChange}
+              onClick={() => handleInputClick("name")} // ✅ track input click
               style={styles.input}
               required
             />
@@ -167,6 +179,7 @@ const WaitlistForm = () => {
               placeholder="Email ID"
               value={formData.email}
               onChange={handleChange}
+              onClick={() => handleInputClick("email")} // ✅ track input click
               style={styles.input}
               required
             />

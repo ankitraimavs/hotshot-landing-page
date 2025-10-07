@@ -12,7 +12,7 @@ export default function Navbar() {
         `}
       </style>
 
-      <div className="w-full bg-[#F5EEE1] m-0 p-0">
+      <div className="w-full bg-[#FFFFFF] m-0 p-0">
         <div
           className="w-full flex items-center justify-center px-6 navbar-shadow"
           style={{

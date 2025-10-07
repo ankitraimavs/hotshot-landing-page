@@ -6,57 +6,55 @@ const slides = [
     heading: "Discover",
     paragraph:
       "Check out the latest fashion trends and discover the forefront of fashion. Uncover the bold styles and innovative looks.",
-    image: "/landing-1.png",
+    image: "/landing-7.png",
     icon: "/icons/icon-1.png",
+    color: "#6366f1",
   },
   {
     heading: "Explore",
     paragraph:
       "Dive into the world of exclusive designs and standout outfits. Fashion meets creativity at every step.",
-    image: "/landing-2.png",
+    image: "/landing-5.png",
     icon: "/icons/icon-2.png",
+    color: "#10b981",
   },
   {
     heading: "Inspire",
     paragraph:
       "Be the trendsetter with our curated collection. Express yourself through bold, innovative styles.",
-    image: "/landing-3.png",
+    image: "/landing-6.png",
     icon: "/icons/icon-3.png",
+    color: "#FDBC17",
   },
 ];
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [slideDirection, setSlideDirection] = useState("next");
-  const [isAnimating, setIsAnimating] = useState(false);
 
   const handleNext = () => {
-    if (isAnimating) return;
-    setSlideDirection("next");
-    setIsAnimating(true);
-    setTimeout(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-      setIsAnimating(false);
-    }, 500); // match animation duration
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
   const handlePrev = () => {
-    if (isAnimating) return;
-    setSlideDirection("prev");
-    setIsAnimating(true);
-    setTimeout(() => {
-      setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-      setIsAnimating(false);
-    }, 500); // match animation duration
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
+  // Preload all slide images on mount
+  useEffect(() => {
+    slides.forEach((slide) => {
+      const img = new Image();
+      img.src = slide.image;
+    });
+  }, []);
+
+  // Handle responsive detection and auto slide
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    handleResize(); // Initial check
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     const interval = setInterval(() => {
@@ -82,15 +80,15 @@ const Hero = () => {
           border-radius: 1rem;
           max-width: 72rem;
           margin: 0 auto;
-          justify-content: center;
-          align-items: center;
+          justify-content: start;
+          align-items: flex-start;
           font-family: 'Poppins', sans-serif;
         }
 
         @media (min-width: 768px) {
           .hero-container {
             flex-direction: row;
-            align-items: center;
+            align-items: flex-start;
           }
         }
 
@@ -99,8 +97,8 @@ const Hero = () => {
           width: 100%;
           display: flex;
           flex-direction: column;
+          padding: 4rem 0rem 0rem 0rem;
           justify-content: center;
-          transition: all 0.5s ease-in-out;
         }
 
         .icon-wrapper {
@@ -110,16 +108,33 @@ const Hero = () => {
         .icon-wrapper img {
           width: 45px;
           height: 45px;
-          transition: all 0.5s ease-in-out;
+        }
+
+        .headline-wrapper {
+          position: relative;
+          display: inline-block;
+          margin-bottom: 0.6rem;
+        }
+
+        .headline-gradient {
+          position: absolute;
+          top: -1.5rem;
+          left: -1.5rem;
+          width: 10rem;
+          height: 10rem;
+          border-radius: 50%;
+          z-index: 0;
+          filter: blur(15px);
+          opacity: 0.6;
         }
 
         .heading {
           font-weight: 600;
           font-size: clamp(24px, 4vw, 48px);
           color: #171717;
-          margin-bottom: 0.4rem;
-          margin-top: 0.2rem;
-          transition: all 0.5s ease-in-out;
+          margin: 0;
+          position: relative;
+          z-index: 1;
         }
 
         .paragraph {
@@ -129,7 +144,6 @@ const Hero = () => {
           line-height: 1.5;
           margin-bottom: 1rem;
           margin-top: 0.2rem;
-          transition: all 0.5s ease-in-out;
         }
 
         .carousel-indicators {
@@ -171,7 +185,6 @@ const Hero = () => {
           background: none;
           border: none;
           cursor: pointer;
-          transition: all 0.3s ease-in-out;
         }
 
         .nav-button:hover {
@@ -189,56 +202,34 @@ const Hero = () => {
           display: flex;
           justify-content: center;
           align-items: center;
-          transition: all 0.5s ease-in-out;
         }
 
         .image-wrapper {
           max-width: 28rem;
           width: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .image-wrapper img {
-          width: 100%;
           height: auto;
-          object-fit: contain;
-          display: block;
-          border-radius: 1rem;
+          position: relative;
         }
 
-        .image-wrapper.animating.slide-next img {
-          animation: slide-in-right 0.5s ease-in-out;
-        }
+ .image-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateX(0);
+  transition: opacity 0.8s ease-in-out, transform 0.5s ease-in-out;
+  border-radius: 1rem;
+  z-index: 1;
+}
 
-        .image-wrapper.animating.slide-prev img {
-          animation: slide-in-left 0.5s ease-in-out;
-        }
+.image-wrapper img.active {
+  position: relative;
+  opacity: 1;
+  transform: translateX(-12px); /* Subtle left movement */
+  z-index: 2;
+}
 
-        @keyframes slide-in-right {
-          0% {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          100% {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-
-        @keyframes slide-in-left {
-          0% {
-            transform: translateX(-100%);
-            opacity: 0;
-          }
-          100% {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
 
         /* ========== Mobile Overrides ========== */
         @media (max-width: 768px) {
@@ -277,15 +268,17 @@ const Hero = () => {
       `}</style>
 
       <div className="hero-container">
-        {/* Show image first on mobile */}
         {isMobile && (
           <div className="right-content">
-            <div
-              className={`image-wrapper slide-${slideDirection} ${
-                isAnimating ? "animating" : ""
-              }`}
-            >
-              <img src={slides[currentSlide].image} alt="Fashion models" />
+            <div className="image-wrapper">
+              {slides.map((slide, index) => (
+                <img
+                  key={index}
+                  src={slide.image}
+                  alt={`Slide ${index}`}
+                  className={index === currentSlide ? "active" : ""}
+                />
+              ))}
             </div>
           </div>
         )}
@@ -295,7 +288,15 @@ const Hero = () => {
             <img src={slides[currentSlide].icon} alt="icon" />
           </div>
 
-          <h2 className="heading">{slides[currentSlide].heading}</h2>
+          <div className="headline-wrapper">
+            <div
+              className="headline-gradient"
+              style={{
+                background: `radial-gradient(circle, ${slides[currentSlide].color}bb 0%, transparent 95%)`,
+              }}
+            />
+            <h2 className="heading">{slides[currentSlide].heading}</h2>
+          </div>
 
           <p className="paragraph">{slides[currentSlide].paragraph}</p>
 
@@ -325,12 +326,15 @@ const Hero = () => {
 
         {!isMobile && (
           <div className="right-content">
-            <div
-              className={`image-wrapper slide-${slideDirection} ${
-                isAnimating ? "animating" : ""
-              }`}
-            >
-              <img src={slides[currentSlide].image} alt="Fashion models" />
+            <div className="image-wrapper">
+              {slides.map((slide, index) => (
+                <img
+                  key={index}
+                  src={slide.image}
+                  alt={`Slide ${index}`}
+                  className={index === currentSlide ? "active" : ""}
+                />
+              ))}
             </div>
           </div>
         )}
